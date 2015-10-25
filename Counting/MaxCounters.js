@@ -10,10 +10,8 @@ function solution(N, A) {
   //for( var k = 0; k < N; k++ ){
   //  resultArray.push(0);
   //}
-  var resultArray = Array.apply(null, Array(N)).map(function () {
-    return 0
-  });
-
+  var resultArray = new Uint32Array(N);
+  var realMax = 0;
   var max = 0;
   for (var i = 0; i < A.length; i++) {
     if (A[i] <= N) {
@@ -23,14 +21,13 @@ function solution(N, A) {
       }
     }
     if (A[i] > N) {
-      setValue(max);
+      resultArray = new Uint32Array(N);
+      realMax += max;
+      max = 0;
     }
   }
-  function setValue(value) {
-    resultArray = Array.apply(null, Array(N)).map(function () {
-      return value
-    });
+  for (i = 0; i < resultArray.length; i++) {
+    resultArray[i] += realMax;
   }
-
   return resultArray;
 }
