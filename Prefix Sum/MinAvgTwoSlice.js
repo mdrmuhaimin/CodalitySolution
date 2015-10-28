@@ -1,51 +1,33 @@
+//In this problem minimum slice array should be size of 2 or 3 not more than that.
 function solution(A) {
   // write your code in JavaScript (Node.js 4.0.0)
-  var sumArray = [];
-  var prefixSumArray = [];
-  var sum = 0;
-  var len = A.length;
-  A.forEach(function (value) {
-    prefixSumArray.push(sum);
-    sum += value;
-    sumArray.push(sum);
-  });
-  var left = getSmallestLeftPos();
-  var right = getSmallestRight();
-  if (left.index < right.index) {
-    return left.index;
-  }
-  if (left.value < right.value) {
-    return left.index;
-  }
-  return 0;
-  function getSmallestLeftPos() {
-    var smallestLeft = {index: 0, value: sum / len};
-    A.forEach(function (value, element) {
-      if (element === len - 1) {
-        return;
-      }
-      var subArraySum = sum - prefixSumArray[element];
-      var subArrayLen = len - element;
-      var subArrayAvg = subArraySum / subArrayLen;
-      if (subArrayAvg < smallestLeft.value) {
-        smallestLeft.index = element;
-        smallestLeft.value = subArrayAvg;
-      }
-    });
-    return smallestLeft;
-  }
-
-  function getSmallestRight() {
-    var smallestRight = {index: len - 1, value: sum / len};
-    for (var i = len - 1; i > 0; i--) {
-      var subArraySum = sumArray[i];
-      var subArrayLen = i + 1;
-      var subArrayAvg = subArraySum / subArrayLen;
-      if (subArrayAvg < smallestRight.value) {
-        smallestRight.index = i;
-        smallestRight.value = subArrayAvg;
+  var minSubArrayAvg = {index: 0, avg: (A[0] + A[1]) / 2};
+  var thereeSizeAvg = 0, twoSizeAvg = 0;
+  A.forEach(function (value, index) {
+    if (index + 2 < A.length) {
+      thereeSizeAvg = getArrayAvg(A.slice(index, index + 3));
+      if (thereeSizeAvg < minSubArrayAvg.avg) {
+        minSubArrayAvg.index = index;
+        minSubArrayAvg.avg = thereeSizeAvg;
       }
     }
-    return smallestRight;
-  }
+
+    if (index + 1 < A.length) {
+      twoSizeAvg = getArrayAvg(A.slice(index, index + 2));
+      if (twoSizeAvg < minSubArrayAvg.avg) {
+        minSubArrayAvg.index = index;
+        minSubArrayAvg.avg = twoSizeAvg;
+      }
+    }
+
+  });
+  return minSubArrayAvg.index;
+}
+
+function getArrayAvg(A) {
+  var sum = 0;
+  A.forEach(function (value) {
+    sum += value;
+  });
+  return sum / A.length;
 }
