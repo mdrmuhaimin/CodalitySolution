@@ -1,6 +1,11 @@
 /**
  * Created by muhammadmuhaimin on 2015-10-25.
  */
+/*
+ This is not the optimal solution, this code's runtime complexity is O(n*m) whether we are looking for a
+ solution with run time complexity of O(n+m)
+ */
+
 
 function solution(N, A) {
   // write your code in JavaScript (Node.js 4.0.0)
